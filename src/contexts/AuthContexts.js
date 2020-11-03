@@ -1,0 +1,58 @@
+import React, { useContext, useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+
+const AuthContext = React.createContext();
+
+export function useAuth() {
+	return useContext(AuthContext);
+}
+
+export function AuthProvider({ children }) {
+	let History = useHistory();
+
+	const [currentUser, setCurrentUser] = useState();
+	const [isLoading, setLoading] = useState(true);
+
+	function login() {}
+	function register() {}
+	function logout() {
+		localStorage.removeItem("token");
+		window.location.reload();
+	}
+
+	async function checklogged() {
+		const res = await fetch("http://localhost:5000/admin/islogged", {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				token: localStorage.token,
+			},
+		});
+		if (res.status == 200) {
+			return await res.json();
+		}
+
+		return false;
+	}
+
+	useEffect(() => {
+		(async () => {
+			const user = await checklogged();
+			setCurrentUser(user);
+			setLoading(false);
+		})();
+	}, []);
+
+	const value = {
+		currentUser,
+		setCurrentUser,
+		checklogged,
+		logout,
+	};
+
+	return (
+		<AuthContext.Provider value={value}>
+			{!isLoading && children}
+		</AuthContext.Provider>
+	);
+}
