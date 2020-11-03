@@ -16,7 +16,7 @@ export function AuthProvider({ children }) {
 	}
 
 	async function checklogged() {
-		const res = await fetch("http://localhost:5000/admin/islogged", {
+		const res = await fetch("/admin/islogged", {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",
