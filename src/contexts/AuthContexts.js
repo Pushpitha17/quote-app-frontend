@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
 
 const AuthContext = React.createContext();
 
@@ -8,13 +7,9 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }) {
-	let History = useHistory();
-
 	const [currentUser, setCurrentUser] = useState();
 	const [isLoading, setLoading] = useState(true);
 
-	function login() {}
-	function register() {}
 	function logout() {
 		localStorage.removeItem("token");
 		window.location.reload();
